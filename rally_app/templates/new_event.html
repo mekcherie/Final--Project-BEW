@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>New Item</h1>
+
+<form method="POST", action="{{ url_for('main.new_event') }}">
+    {{ form.csrf_token }}
+    <fieldset>
+        <legend>Please enter your information:</legend>
+        
+        {{ form.name.label }}
+        {{ form.name }}
+
+        {{ form.category.label }}
+        {{ form.category }}
+
+        {{ form.event.label }}
+        {{ form.event }}
+
+        {{ form.submit }}
+    </fieldset>
+</form>
+
+
+{% endblock %}

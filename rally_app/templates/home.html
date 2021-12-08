@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Rally Event Tracker</h1>
+
+<p><em>The best place to track Rally in the US</em></p>
+
+<h2>All Events</h2>
+
+{% for store in all_stores %}
+<div class="event">
+    <a href="/event/{{ event.id }}">{{ event.title }}</a> - 
+    {{ event.items|length }} items
+    <p><strong>Address:</strong> {{ event.address }}</p>
+</div>
+{% endfor %}
+
+{% endblock %}
