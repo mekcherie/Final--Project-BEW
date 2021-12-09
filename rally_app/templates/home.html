@@ -7,10 +7,10 @@
 
 <h2>All Events</h2>
 
-{% for store in all_stores %}
+{% for spot in all_spots %}
 <div class="event">
     <a href="/event/{{ event.id }}">{{ event.title }}</a> - 
-    {{ event.items|length }} items
+    {{ event.events|length }} events
     <p><strong>Address:</strong> {{ event.address }}</p>
 </div>
 {% endfor %}
