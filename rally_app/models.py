@@ -35,7 +35,6 @@ class Rallyevent(db.Model):
     spot = db.relationship('Rallyspot', back_populates='events')
     created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     created_by = db.relationship('User')
-    shopping_list = db.relationship('User', secondary='shopping_list', back_populates = 'shopping_list_events')
 
 class User(db.Model, UserMixin):
     """User model."""

@@ -40,7 +40,7 @@ def new_spot():
     return render_template('new_spot.html', form = form)
 
 
-@main.route('/new_', methods=['GET', 'POST'])
+@main.route('/new_event', methods=['GET', 'POST'])
 @login_required
 def new_event():
     form = RallyeventForm()
@@ -102,24 +102,6 @@ def event_detail(event_id):
         return redirect(url_for('main.event_detail', event_id=event.id, event=event))
 
     return render_template('event_detail.html', event=event, form=form)
-
-
-@main.route('/add_to_shopping_list/<event_id>', methods = ['POST'])
-def add_to_shopping_list(event_id):
-    user_current = current_user
-    event = Rallyevent.query.get(event_id)
-    user_current.shopping_list_events.append(event)
-    db.session.commit()
-
-    flash('event was added to Cart')
-    return redirect(url_for('main.event_detail', event_id = event.id))
-
-
-@main.route('/shopping_list')
-@login_required
-def shopping_list():
-    events = current_user.shopping_list_events
-    return render_template('shopping_list.html', shopping_events = events)
 
 
 ##########################################
