@@ -14,7 +14,7 @@ class RallyEventForm(FlaskForm):
     """Form for adding/updating a RallyEvent."""
     name = StringField('Name', validators=[DataRequired(), Length(min=3, max=150)])
     price = FloatField('Price')
-    category = SelectField('Category', choices=[('PRODUCE', 'Produce'), ('DELI', 'Deli'), ('BAKERY', 'Bakery'), ('PANTRY', 'Pantry'), ('FROZEN', 'Frozen'), ('OTHER', 'Other')])
+    category = SelectField('Category', choices=[('ETHIOPIAN', 'Ethiopian'), ('ERITREAN', 'Eritrean'), ('AFGANTISTIAN', 'Afgantistian'), ('ISREAL', 'Isreal'), ('IRAQ', 'Iraq'), ('OTHER', 'Other')])
     photo_url = StringField('Photo', validators=[URL()])
     location = QuerySelectField('location', query_factory=lambda: RallyLocation.query)
     submit = SubmitField('Submit')
