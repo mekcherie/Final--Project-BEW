@@ -19,9 +19,8 @@ class RallyLocation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(80), nullable=False)
     address = db.Column(db.String(200), nullable=False)
-    events = db.relationship('RallyEvent', back_populates='location')
-    # created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    # created_by = db.relationship('User')
+    event_id = db.Column(db.Integer, db.ForeignKey('rally_event.id'))
+    event = db.relationship("RallyEvent", back_populates="location")
 
     def __str__(self):
         return str(self.title)
@@ -34,12 +33,7 @@ class RallyEvent(db.Model):
     price = db.Column(db.Float(precision=2), nullable=False)
     category = db.Column(db.Enum(eventCategory), default=eventCategory.OTHER)
     photo_url = db.Column(URLType)
-    # location = db.Column(db.Integer, db.ForeignKey(
-        # 'RallyLocation.id'), nullable=False)
-    location = db.relationship('RallyLocation', back_populates='events')
-    # created_by_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    # created_by = db.relationship('User')
-
+    location = db.relationship("RallyLocation", back_populates="event")
 
 class User(db.Model, UserMixin):
     """User model."""
@@ -54,11 +48,15 @@ class User(db.Model, UserMixin):
 
 
 event_location_table = db.Table('event_location',
-    db.Column('event_id', db.Integer, db.ForeignKey('RallyEvent.id')),
-    db.Column('location_id', db.Integer, db.ForeignKey('RallyLocation.id'))
-)
+                                db.Column('event_id', db.Integer,
+                                          db.ForeignKey('rally_event.id')),
+                                db.Column('location_id', db.Integer,
+                                          db.ForeignKey('rally_location.id'))
+                                )
 
 event_user_table = db.Table('event_user',
-    db.Column('user_id', db.Integer, db.ForeignKey('User.id')),
-    db.Column('event_id', db.Integer, db.ForeignKey('RallyEvent.id'))
-)
+                            db.Column('user_id', db.Integer,
+                                      db.ForeignKey('user.id')),
+                            db.Column('event_id', db.Integer,
+                                      db.ForeignKey('rally_event.id'))
+                            )
