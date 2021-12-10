@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from datetime import date, datetime
-from rally_app.models import Rallyspot, Rallyevent, User
-from rally_app.forms import RallyspotForm, RallyeventForm, SignUpForm, LoginForm
+from rally_app.models import RallyLocation, RallyEvent, User
+from rally_app.forms import RallyLocationForm, RallyEventForm, SignUpForm, LoginForm
 from flask_login import login_user, logout_user, login_required, current_user
 from rally_app import bcrypt
 from rally_app import app, db
@@ -14,7 +14,7 @@ main = Blueprint("main", __name__)
 
 @main.route('/')
 def homepage():
-    all_spots = Rallyspot.query.all()
+    all_spots = RallyLocation.query.all()
     print(all_spots)
     return render_template('home.html', all_spots=all_spots)
 
@@ -22,10 +22,10 @@ def homepage():
 @main.route('/new_spot', methods=['GET', 'POST'])
 @login_required
 def new_spot():
-    form = RallyspotForm()
+    form = RallyLocationForm()
 
     if form.validate_on_submit():
-        new_spot = Rallyspot(
+        new_spot = RallyLocation(
             title = form.title.data,
             address = form.address.data,
             created_by = current_user
@@ -43,15 +43,15 @@ def new_spot():
 @main.route('/new_event', methods=['GET', 'POST'])
 @login_required
 def new_event():
-    form = RallyeventForm()
+    form = RallyEventForm()
 
     if form.validate_on_submit():
-        new_event = Rallyevent(
+        new_event = RallyEvent(
             name = form.name.data,
             price = form.price.data,
             category = form.category.data,
             photo_url = form.photo_url.data,
-            spot = form.spot.data,
+            location = form.location.data,
             created_by = current_user
         )
 
@@ -67,8 +67,8 @@ def new_event():
 @main.route('/spot/<spot_id>', methods=['GET', 'POST'])
 @login_required
 def spot_detail(spot_id):
-    spot = Rallyspot.query.get(spot_id)
-    form = RallyspotForm (obj=spot)
+    spot = RallyLocation.query.get(spot_id)
+    form = RallyLocationForm (obj=spot)
 
     if form.validate_on_submit():
         spot.title = form.title.data
@@ -85,16 +85,16 @@ def spot_detail(spot_id):
 @main.route('/event/<event_id>', methods=['GET', 'POST'])
 @login_required
 def event_detail(event_id):
-    event = Rallyevent.query.get(event_id)
+    event = RallyEvent.query.get(event_id)
 
-    form = RallyeventForm(obj=event)
+    form = RallyEventForm(obj=event)
 
     if form.validate_on_submit():
         event.name = form.name.data
         event.price = form.price.data
         event.category = form.category.data
         event.photo_url = form.photo_url.data
-        event.spot = form.spot.data
+        event.location = form.location.data
 
         db.session.commit()
 
